@@ -5,7 +5,7 @@ public class Goleiro {
 	private int id;
 	private int AAG;
 	private int speed, flex, agil, coord, power, equil;
-	private int defesas=0;
+	private int defesas=0, golTomado=0;
 	
 	public Goleiro(int id,String nome, int speed, int flex, int agil, int coord, int power, int equil) {
 		this.nome = nome;
@@ -36,5 +36,13 @@ public class Goleiro {
 	public int getDefesa() {
 		return defesas;
 	}
-	
+	public int getPower() {
+		return power;
+	}
+	public void addGol() {
+		golTomado++;
+	}
+	public int getGolTomado() {
+		return golTomado;
+	}
 }
