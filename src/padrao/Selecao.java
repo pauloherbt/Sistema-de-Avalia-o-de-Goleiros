@@ -8,7 +8,7 @@ public class Selecao {
 	
 	public Selecao(String nome) {
 		this.nome=nome;
-	}
+		}
 	public void addGoleiro(Goleiro goleiro) {
 		this.goleiros.add(goleiro);
 	}

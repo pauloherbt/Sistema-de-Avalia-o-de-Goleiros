@@ -13,6 +13,16 @@ public class Chute {
 		this.quadrante = quadrante;
 		this.x = x;
 		this.y = y;
+		relacaoGol=null;
+	}
+	
+	public Chute(Chute ch) {
+		this.id = ch.getId();
+		this.power = ch.getPower();
+		this.quadrante = ch.getQuadrante();
+		this.x = ch.getX();
+		this.y = ch.getY();
+		relacaoGol=null;
 	}
 	public void mapearPosicao() {
 		String status="G";
@@ -69,5 +79,8 @@ public class Chute {
 	}
 	public String getRelacaoGol() {
 		return relacaoGol;
+	}
+	public void setRelacaoGol(String relacaoGol) {
+		this.relacaoGol=relacaoGol;
 	}
 }

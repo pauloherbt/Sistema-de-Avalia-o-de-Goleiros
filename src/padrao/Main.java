@@ -3,6 +3,23 @@ package padrao;
 import java.util.ArrayList;
 
 public class Main {
+	public static Gol criarGol() {
+		Gol golaux = new Gol();
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 16; j++) {
+				Celula celula = new Celula();
+				celula.setX(i);
+				celula.setY(j);
+				celula.mapearPosicao();
+				celula.verificarQuadrante();
+				golaux.addCelula(celula);
+			}
+		}
+		carregarSelecao(golaux);
+		carregarChutes(golaux);
+		return golaux;
+	}
+
 	public static ArrayList<Goleiro> carregarGoleiros() {
 		ArrayList<Goleiro> goleiros = new ArrayList<>();
 		goleiros.add(new Goleiro(1, "Pratik Skaggs", 5, 7, 8, 9, 6, 6));
@@ -31,7 +48,6 @@ public class Main {
 		goleiros.add(new Goleiro(24, "Albin Kerner", 6, 7, 8, 8, 9, 9));
 		goleiros.add(new Goleiro(25, "Jivin Justus", 9, 10, 8, 7, 7, 5));
 		goleiros.add(new Goleiro(26, "Clement Fleisher", 10, 9, 10, 5, 7, 8));
-
 		return goleiros;
 	}
 
@@ -118,40 +134,18 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		Gol gol=criarGol();
+		
+//		
+		 gol.chuteAoGol();
+		 System.out.println(gol.mediaDefesas());
+		 System.out.println(gol.informarPontuacao());
+		 System.out.println(gol.mediaGolsTomados());
+		 System.out.println(gol.mapearChutes());
+		 System.out.println(gol.melhoresGoleiros());
+		 System.out.println(gol.golsPorForca());
+		 System.out.println(gol.imprimirGoleiro());
+		 System.out.println(gol.BuscarGoleiro(20));
 
-		Gol golaux = new Gol();
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 16; j++) {
-				Celula celula = new Celula();
-				celula.setX(i);
-				celula.setY(j);
-				celula.mapearPosicao();
-				celula.verificarQuadrante();
-				golaux.addCelula(celula);
-			}
 		}
-		// imprimirStatus(golaux);
-		// System.out.println();
-		// imprimirQuadrante(golaux);
-		carregarSelecao(golaux);
-		carregarChutes(golaux);
-//		for (Selecao s : golaux.getSelecoes()) {
-//			System.out.println(s.getNome());
-//			for (Goleiro g : s.getGoleiros()) {
-//				System.out.println(g.getNome());
-//			}
-//		}
-		// golaux.chuteAoGol();
-		 golaux.chuteAoGol();
-		 System.out.println(golaux.mediaDefesas());
-		 System.out.println(golaux.informarPontuacao());
-		 System.out.println(golaux.mediaGolsTomados());
-		 System.out.println(golaux.mapearChutes());
-//		System.out.println("aag goleiro: "+ carregarGoleiros().get(0).getAAG());
-//		for (Chute ch : golaux.getChutes()) {
-//			Celula caux = golaux.sortearPosicao(ch);
-//			System.out.println("\nposicao do chute:"+ch.getX()+" "+ch.getY());
-//			System.out.println("\nposicao inicial "+ caux.getX()+" "+caux.getY());
-//			golaux.verificarGol(caux, ch, carregarGoleiros().get(0));
-		}
-	}
+}

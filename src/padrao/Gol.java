@@ -8,7 +8,7 @@ public class Gol {
 	private ArrayList<Chute> chutes = new ArrayList<>();
 	private ArrayList<Selecao> selecoes = new ArrayList<>();
 
-	public void chuteAoGol() {
+	public void chuteAoGol() { // motor do jogo
 		Celula caux = new Celula();
 		for (Selecao selecao : selecoes) {
 			for (Goleiro goleiro : selecao.getGoleiros()) {
@@ -25,20 +25,30 @@ public class Gol {
 		int x = caux.getX();
 		int y = caux.getY();
 		int count = 0, somador, n = goleiro.getAAG();
-		boolean defendeu = false;
-
+		boolean defesa = false;
 		somador = n % 4 == 0 ? (n / 4) - 1 : (n / 4);
+		Chute aux = new Chute(ch);
 		do {
 			if (count < 4) {
 				if (x == ch.getX() && y == ch.getY()) {
 					if (count == 3) { // verifica a ultima linha da aag
-						goleiro.addDefesa();
+						if (goleiro.getPower() >= ch.getPower()) {
+							defesa = true;
+						} else { // caso a forca n seja suficiente
+							goleiro.addGoldeForca();
+							defesa = false;
+						}
+
 					} else if (y == caux.getY() + somador) { // verifica a ultima coluna da aag
-						goleiro.addDefesa();
-					} else { // gol normal
-						goleiro.addDefesa();
-					}
-					defendeu = true; // sair do laco
+						if (goleiro.getPower() >= ch.getPower()) {
+							defesa = true;
+						} else { // forca insuficiente
+							goleiro.addGoldeForca();
+							defesa = false;
+						}
+					} else
+						defesa = true;
+
 				}
 				n--;
 				count++;
@@ -48,9 +58,14 @@ public class Gol {
 				y = y < 15 ? y += 1 : y;
 				count = 0;
 			}
-		} while ((n > 0 && defendeu == false));
-		if (defendeu == false) {
-			goleiro.addGol();
+
+		} while ((n > 0 && defesa == false));
+		if (defesa == true) {
+			aux.setRelacaoGol("Defesa");
+			goleiro.addChute(aux);
+		} else {
+			aux.setRelacaoGol("Gol");
+			goleiro.addChute(aux);
 		}
 	}
 
@@ -72,7 +87,7 @@ public class Gol {
 		for (Selecao se : selecoes) {
 			int soma = 0;
 			for (Goleiro go : se.getGoleiros()) {
-				soma += go.getDefesa();
+				soma += go.contarDefesas();
 			}
 			media = (double) soma / se.getGoleiros().size();
 			total += "\nSelecao: " + se.getNome() + "\nMedia de Defesas: " + String.format("%.2f", media);
@@ -88,9 +103,9 @@ public class Gol {
 			int maior = 0;
 			String nome = "";
 			for (Goleiro gol : sel.getGoleiros()) {
-				result += gol.getNome() + " Defesas: " + gol.getDefesa() + "\n";
-				if (gol.getDefesa() > maior) {
-					maior = gol.getDefesa();
+				result += gol.getNome() + " Defesas: " + gol.contarDefesas() + "\n";
+				if (gol.contarDefesas() > maior) {
+					maior = gol.contarDefesas();
 					nome = gol.getNome();
 
 				}
@@ -108,7 +123,8 @@ public class Gol {
 			int soma = 0;
 			double media = 0;
 			for (Goleiro gol : sel.getGoleiros()) {
-				soma += gol.getGolTomado();
+				soma += gol.contarGols();
+
 			}
 			media = (double) soma / sel.getGoleiros().size();
 			result += sel.getNome() + ": " + String.format("%.2f", media) + "\n";
@@ -136,7 +152,113 @@ public class Gol {
 		return result = "---------------------------\n" + "RELACAO DE CHUTES\n" + "Trave Esquerda: " + te
 				+ "\nTrave Direita: " + td + "\nTravessao: " + tr + "\nFora: " + fora + "\nAngulo:" + angulo;
 	}
-	
+
+	// questao 6
+	public String melhoresGoleiros() {
+		int maior = 0, indexGoleiro = 0, indexSelecao = 0;
+		ArrayList<Selecao> aux = selecoes;
+		String result = "---------------------\nSelecao dos Melhores Goleiros";
+		for (int i = 0; i < 3; i++) {
+			maior = 0;
+			for (Selecao sel : aux) {
+				for (Goleiro gol : sel.getGoleiros()) {
+					if (gol.contarDefesas() > maior) {
+						maior = gol.contarDefesas();
+						indexGoleiro = sel.getGoleiros().indexOf(gol);
+						indexSelecao = aux.indexOf(sel);
+					}
+				}
+			}
+			result += "\n" + aux.get(indexSelecao).getNome() + " "
+					+ aux.get(indexSelecao).getGoleiros().get(indexGoleiro).contarDefesas();
+			aux.get(indexSelecao).getGoleiros().remove(indexGoleiro);
+		}
+		return result;
+	}
+
+	// questao 7
+	public String golsPorForca() {
+		int soma = 0;
+		for (Selecao sel : selecoes) {
+			for (Goleiro gol : sel.getGoleiros()) {
+				soma += gol.getGolDeForca();
+			}
+		}
+		return "--------------------------\nOCORRENCIAS DE GOLS POR FALTA DE FORCA DO GOLEIRO: " + soma;
+	}
+
+	// questao 8
+	public String imprimirGoleiro() {
+		String result = "----------------------------\nLISTA DE GOLEIROS:\nNome|Selecao|Gols defendidos|Golstomados|AAG";
+		for (Selecao sel : selecoes) {
+			for (Goleiro gol : sel.getGoleiros()) {
+				result += "\n" + gol.getNome() + "|" + sel.getNome() + "|" + gol.contarDefesas() + "|" + gol.contarGols()
+						+ "|" + gol.getAAG();
+			}
+		}
+		return result;
+	}
+
+	// Questao 9
+	public String BuscarGoleiro(int id) {
+		String result = "";
+		for (Selecao sel : selecoes) {
+			for (Goleiro goleiro : sel.getGoleiros()) {
+				if (id == goleiro.getId()) {
+					result = "-------------------------------------\nGoleiro: " + goleiro.getNome() + " ID:"
+							+ goleiro.getId() + "\nQuadrante que tomou mais gol:" + quadranteComMaisGols(goleiro);
+				}
+			}
+		}
+		return result;
+
+	}// questao 10
+//	public String imprimirMatriz() {
+//		String result="";
+//		for (Selecao sel : selecoes) {
+//			for (Goleiro gol : sel.getGoleiros()) {
+//				for (int i = 0; i < celulas.size(); i++) {
+//					
+//				}
+//			}
+//		}
+//		
+//	}
+
+	public ArrayList<Celula> golRepetido(ArrayList<Chute> chutes) {
+		ArrayList<Celula> golsRepetidos = new ArrayList<>();
+		Celula aux;
+		for (Chute ch : chutes) {
+			for (Chute ch2 : chutes) {
+				if (ch.getId() == ch2.getId()) {
+					aux = new Celula();
+					aux.setX(ch.getX());
+					aux.setY(ch.getY());
+					aux.AddQtdGol();
+					golsRepetidos.add(aux);
+				}
+			}
+		}
+		return golsRepetidos;
+	}
+
+	public int quadranteComMaisGols(Goleiro goleiro) {
+		int maior = 0, index = 0;
+		int[] vet = new int[4];
+		for (Chute ch : goleiro.getTotalDeChutes()) {
+			if (ch.getRelacaoGol().equals("Gol")) {
+				vet[ch.getQuadrante() - 1]++;
+			}
+		}
+		for (int i = 0; i < vet.length; i++) {
+			if (vet[i] > maior) {
+				maior = vet[i];
+				index = i;
+			}
+		}
+		return index + 1;
+	}
+
 	public void addSelecao(Selecao selecao) {
 		this.selecoes.add(selecao);
 	}

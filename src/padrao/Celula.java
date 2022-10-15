@@ -6,6 +6,8 @@ public class Celula {
 	private String relacaoGol;
 	private int quadrante;
 	
+	private int qtdGol;
+	
 	public int getX() {
 		return x;
 	}
@@ -75,6 +77,12 @@ public class Celula {
 	}
 	public int getQuadrante() {
 		return quadrante;
+	}
+	public int getQtdGol() {
+		return qtdGol;
+	}
+	public void AddQtdGol() {
+		this.qtdGol++;
 	}
 	
 	
