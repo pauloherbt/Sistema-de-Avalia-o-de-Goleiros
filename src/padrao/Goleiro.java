@@ -8,7 +8,6 @@ public class Goleiro {
 	private int AAG;
 	private int speed, flex, agil, coord, power, equil;
 
-	private int defesas = 0, golTomado = 0;
 	private int golDeForca = 0;
 	private ArrayList<Chute> totalDeChutes = new ArrayList<>();
 
@@ -23,8 +22,9 @@ public class Goleiro {
 		this.equil = equil;
 		this.AAG = ((speed * 3) + (flex * 2) + (agil * 3) + (coord * 2) + (power) + (equil * 2)) / 8;
 	}
+
 	public int contarDefesas() {
-		int defesas=0;
+		int defesas = 0;
 		for (Chute ch : totalDeChutes) {
 			if (ch.getRelacaoGol().equals("Defesa")) {
 				defesas++;
@@ -32,8 +32,9 @@ public class Goleiro {
 		}
 		return defesas;
 	}
+
 	public int contarGols() {
-		int gols=0;
+		int gols = 0;
 		for (Chute ch : totalDeChutes) {
 			if (ch.getRelacaoGol().equals("Gol")) {
 				gols++;
@@ -41,6 +42,7 @@ public class Goleiro {
 		}
 		return gols;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -53,24 +55,8 @@ public class Goleiro {
 		return AAG;
 	}
 
-	public void addDefesa() {
-		this.defesas++;
-	}
-
-	public int getDefesa() {
-		return defesas;
-	}
-
 	public int getPower() {
 		return power;
-	}
-
-	public void addGol() {
-		golTomado++;
-	}
-
-	public int getGolTomado() {
-		return golTomado;
 	}
 
 	public void addGoldeForca() {

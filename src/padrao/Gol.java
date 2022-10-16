@@ -134,7 +134,6 @@ public class Gol {
 
 	// questao 4 e 5
 	public String mapearChutes() {
-		String result = "";
 		int te = 0, tr = 0, td = 0, fora = 0, angulo = 0;
 		for (Chute ch : chutes) {
 			ch.mapearPosicao();
@@ -149,8 +148,10 @@ public class Gol {
 			if (ch.getRelacaoGol().equals("A"))
 				angulo++;
 		}
-		return result = "---------------------------\n" + "RELACAO DE CHUTES\n" + "Trave Esquerda: " + te
+		String result = "---------------------------\n" + "RELACAO DE CHUTES\n" + "Trave Esquerda: " + te
 				+ "\nTrave Direita: " + td + "\nTravessao: " + tr + "\nFora: " + fora + "\nAngulo:" + angulo;
+		;
+		return result;
 	}
 
 	// questao 6
@@ -192,8 +193,8 @@ public class Gol {
 		String result = "----------------------------\nLISTA DE GOLEIROS:\nNome|Selecao|Gols defendidos|Golstomados|AAG";
 		for (Selecao sel : selecoes) {
 			for (Goleiro gol : sel.getGoleiros()) {
-				result += "\n" + gol.getNome() + "|" + sel.getNome() + "|" + gol.contarDefesas() + "|" + gol.contarGols()
-						+ "|" + gol.getAAG();
+				result += "\n" + gol.getNome() + "|" + sel.getNome() + "|" + gol.contarDefesas() + "|"
+						+ gol.contarGols() + "|" + gol.getAAG();
 			}
 		}
 		return result;
@@ -211,35 +212,6 @@ public class Gol {
 			}
 		}
 		return result;
-
-	}// questao 10
-//	public String imprimirMatriz() {
-//		String result="";
-//		for (Selecao sel : selecoes) {
-//			for (Goleiro gol : sel.getGoleiros()) {
-//				for (int i = 0; i < celulas.size(); i++) {
-//					
-//				}
-//			}
-//		}
-//		
-//	}
-
-	public ArrayList<Celula> golRepetido(ArrayList<Chute> chutes) {
-		ArrayList<Celula> golsRepetidos = new ArrayList<>();
-		Celula aux;
-		for (Chute ch : chutes) {
-			for (Chute ch2 : chutes) {
-				if (ch.getId() == ch2.getId()) {
-					aux = new Celula();
-					aux.setX(ch.getX());
-					aux.setY(ch.getY());
-					aux.AddQtdGol();
-					golsRepetidos.add(aux);
-				}
-			}
-		}
-		return golsRepetidos;
 	}
 
 	public int quadranteComMaisGols(Goleiro goleiro) {
@@ -257,6 +229,62 @@ public class Gol {
 			}
 		}
 		return index + 1;
+	}
+
+	// questao 10
+	public String imprimirMatrizes() {
+		String saida = "-------------------------\nMATRIZ DOS GOLEIROS\n";
+		for (Selecao sel : selecoes) {
+			for (Goleiro gol : sel.getGoleiros()) {
+				saida += "Goleiro: " + gol.getNome() + "\n";
+				saida += matrizDoGoleiro(gol) + "\n";
+			}
+		}
+		return saida;
+	}
+
+	public String matrizDoGoleiro(Goleiro goleiro) {
+		String result = " ";
+		int ocorrencias = 0;
+		String saida = "";
+		ArrayList<Chute> aux = goleiro.getTotalDeChutes();
+		for (int i = 0; i < celulas.size(); i++) {
+			ocorrencias = 0;
+			Chute verify = procurarPosicao(celulas.get(i).getX(), celulas.get(i).getY(), aux);
+			if (verify != null) {
+				ocorrencias = ocorrencia(celulas.get(i).getX(), celulas.get(i).getY(), aux);
+				if (verify.getRelacaoGol().equals("Gol")) {
+					result = (ocorrencias + "*");
+				} else
+					result = (ocorrencias + "X");
+			} else {
+				result = (celulas.get(i).getRelacaoGol() + " ");
+			}
+			if (celulas.get(i).getY() == 15) {
+				result += "\n";
+			}
+			saida += result;
+		}
+		return saida;
+	}
+
+	public int ocorrencia(int x, int y, ArrayList<Chute> totalch) {
+		int ocorrencia = 0;
+		for (Chute chute : totalch) {
+			if (chute.getX() == x && chute.getY() == y) {
+				ocorrencia++;
+			}
+		}
+		return ocorrencia;
+	}
+
+	public Chute procurarPosicao(int x, int y, ArrayList<Chute> totalch) {
+		for (Chute chute : totalch) {
+			if (x == chute.getX() && y == chute.getY()) {
+				return chute;
+			}
+		}
+		return null;
 	}
 
 	public void addSelecao(Selecao selecao) {
@@ -282,5 +310,4 @@ public class Gol {
 	public ArrayList<Selecao> getSelecoes() {
 		return selecoes;
 	}
-
 }

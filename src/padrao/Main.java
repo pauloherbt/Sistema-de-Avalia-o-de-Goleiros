@@ -1,6 +1,7 @@
 package padrao;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 	public static Gol criarGol() {
@@ -51,6 +52,7 @@ public class Main {
 		return goleiros;
 	}
 
+	// instanciando selecoes
 	public static void carregarSelecao(Gol golaux) {
 		ArrayList<Goleiro> aux = carregarGoleiros();
 		Selecao s1 = new Selecao("Brasil");
@@ -79,6 +81,7 @@ public class Main {
 
 	}
 
+	// instanciando chutes
 	public static void carregarChutes(Gol golaux) {
 		golaux.addChute(new Chute(1, 2, 1, 4, 7));
 		golaux.addChute(new Chute(2, 6, 1, 3, 6));
@@ -113,39 +116,20 @@ public class Main {
 
 	}
 
-	public static void imprimirQuadrante(Gol golaux) {
-		ArrayList<Celula> aux = golaux.getCelulas();
-		for (int i = 0; i < aux.size(); i++) {
-			System.out.print(aux.get(i).getQuadrante() + " ");
-			if (aux.get(i).getY() == 15) {
-				System.out.println();
-			}
-		}
-	}
-
-	public static void imprimirStatus(Gol golaux) {
-		ArrayList<Celula> aux = golaux.getCelulas();
-		for (int i = 0; i < aux.size(); i++) {
-			System.out.print(aux.get(i).getRelacaoGol() + " ");
-			if (aux.get(i).getY() == 15) {
-				System.out.println();
-			}
-		}
-	}
-
 	public static void main(String[] args) {
-		Gol gol=criarGol();
-		
-//		
-		 gol.chuteAoGol();
-		 System.out.println(gol.mediaDefesas());
-		 System.out.println(gol.informarPontuacao());
-		 System.out.println(gol.mediaGolsTomados());
-		 System.out.println(gol.mapearChutes());
-		 System.out.println(gol.melhoresGoleiros());
-		 System.out.println(gol.golsPorForca());
-		 System.out.println(gol.imprimirGoleiro());
-		 System.out.println(gol.BuscarGoleiro(20));
-
-		}
+		Scanner sc = new Scanner(System.in);
+		Gol gol = criarGol();
+		gol.chuteAoGol();
+		System.out.println(gol.mediaDefesas()); // 1
+		System.out.println(gol.informarPontuacao());// 2
+		System.out.println(gol.mediaGolsTomados());// 3
+		System.out.println(gol.mapearChutes());// 4 e 5
+		System.out.println(gol.melhoresGoleiros());// 6
+		System.out.println(gol.golsPorForca());// 7
+		System.out.println(gol.imprimirGoleiro());// 8
+		System.out.println("-----------------------\nDigite o id do goleiro a ser buscado");
+		System.out.println(gol.BuscarGoleiro(sc.nextInt()));// 9
+		System.out.println(gol.imprimirMatrizes());// 10
+		sc.close();
+	}
 }
