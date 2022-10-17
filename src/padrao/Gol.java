@@ -9,11 +9,10 @@ public class Gol {
 	private ArrayList<Selecao> selecoes = new ArrayList<>();
 
 	public void chuteAoGol() { // motor do jogo
-		Celula caux = new Celula();
 		for (Selecao selecao : selecoes) {
 			for (Goleiro goleiro : selecao.getGoleiros()) {
 				for (Chute ch : chutes) {
-					caux = sortearPosicao(ch); // posicao inicial da aag para cada chute
+					Celula caux = sortearPosicao(ch); // posicao inicial da aag para cada chute
 					verificarGol(caux, ch, goleiro);
 
 				}
@@ -124,7 +123,6 @@ public class Gol {
 			double media = 0;
 			for (Goleiro gol : sel.getGoleiros()) {
 				soma += gol.contarGols();
-
 			}
 			media = (double) soma / sel.getGoleiros().size();
 			result += sel.getNome() + ": " + String.format("%.2f", media) + "\n";
@@ -254,9 +252,9 @@ public class Gol {
 			if (verify != null) {
 				ocorrencias = ocorrencia(celulas.get(i).getX(), celulas.get(i).getY(), aux);
 				if (verify.getRelacaoGol().equals("Gol")) {
-					result = (ocorrencias + "*");
+					result = ocorrencias>1? ocorrencias + "*":"* ";
 				} else
-					result = (ocorrencias + "X");
+					result = ocorrencias>1? ocorrencias + "X":"X ";;
 			} else {
 				result = (celulas.get(i).getRelacaoGol() + " ");
 			}
@@ -268,7 +266,7 @@ public class Gol {
 		return saida;
 	}
 
-	public int ocorrencia(int x, int y, ArrayList<Chute> totalch) {
+	public int ocorrencia(int x, int y, ArrayList<Chute> totalch) { //quantas vezes o chute acontece
 		int ocorrencia = 0;
 		for (Chute chute : totalch) {
 			if (chute.getX() == x && chute.getY() == y) {
@@ -278,7 +276,7 @@ public class Gol {
 		return ocorrencia;
 	}
 
-	public Chute procurarPosicao(int x, int y, ArrayList<Chute> totalch) {
+	public Chute procurarPosicao(int x, int y, ArrayList<Chute> totalch) { //verifica se houve chute naquela posicao
 		for (Chute chute : totalch) {
 			if (x == chute.getX() && y == chute.getY()) {
 				return chute;
