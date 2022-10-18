@@ -54,17 +54,30 @@ public class Gol {
 				x = x > 0 ? x -= 1 : caux.getX();
 			} else {
 				x = caux.getX();
-				y = y < 15 ? y += 1 : y;
+				y = y < 17 ? y += 1 : y;
 				count = 0;
 			}
 
 		} while ((n > 0 && defesa == false));
 		if (defesa == true) {
-			aux.setRelacaoGol("Defesa");
-			goleiro.addChute(aux);
+			ch.mapearPosicao();
+			if(ch.getRelacaoGol().equals("G")||ch.getRelacaoGol().equals("A")) {
+				aux.setRelacaoGol("Defesa");
+				goleiro.addChute(aux);
+			}
+			else
+				aux.setRelacaoGol(ch.getRelacaoGol());
+				goleiro.addChute(aux);
 		} else {
-			aux.setRelacaoGol("Gol");
-			goleiro.addChute(aux);
+			ch.mapearPosicao();
+			if(ch.getRelacaoGol().equals("G")||ch.getRelacaoGol().equals("A")) {
+				aux.setRelacaoGol("Gol");
+				goleiro.addChute(aux);
+		}
+			else {
+				aux.setRelacaoGol(ch.getRelacaoGol());
+				goleiro.addChute(aux);
+			}
 		}
 	}
 
@@ -72,8 +85,8 @@ public class Gol {
 		Random rd = new Random();
 		Celula caux = new Celula();
 		do {
-			caux.setX(rd.nextInt(8));
-			caux.setY(rd.nextInt(16));
+			caux.setX(rd.nextInt(10));
+			caux.setY(rd.nextInt(18));
 			caux.verificarQuadrante();
 		} while (caux.getQuadrante() != ch.getQuadrante());
 		return caux;
@@ -248,17 +261,18 @@ public class Gol {
 		ArrayList<Chute> aux = goleiro.getTotalDeChutes();
 		for (int i = 0; i < celulas.size(); i++) {
 			ocorrencias = 0;
+			result=celulas.get(i).getRelacaoGol()+" ";
 			Chute verify = procurarPosicao(celulas.get(i).getX(), celulas.get(i).getY(), aux);
 			if (verify != null) {
 				ocorrencias = ocorrencia(celulas.get(i).getX(), celulas.get(i).getY(), aux);
 				if (verify.getRelacaoGol().equals("Gol")) {
-					result = ocorrencias>1? ocorrencias + "*":"* ";
-				} else
-					result = ocorrencias>1? ocorrencias + "X":"X ";;
+					result = ocorrencias > 1 ? ocorrencias + "*" : "* ";
+				} else if (verify.getRelacaoGol().equals("Defesa"))
+					result = ocorrencias > 1 ? ocorrencias + "X" : "X ";
 			} else {
 				result = (celulas.get(i).getRelacaoGol() + " ");
 			}
-			if (celulas.get(i).getY() == 15) {
+			if (celulas.get(i).getY() == 17) {
 				result += "\n";
 			}
 			saida += result;
@@ -266,7 +280,7 @@ public class Gol {
 		return saida;
 	}
 
-	public int ocorrencia(int x, int y, ArrayList<Chute> totalch) { //quantas vezes o chute acontece
+	public int ocorrencia(int x, int y, ArrayList<Chute> totalch) { // quantas vezes o chute acontece
 		int ocorrencia = 0;
 		for (Chute chute : totalch) {
 			if (chute.getX() == x && chute.getY() == y) {
@@ -276,7 +290,7 @@ public class Gol {
 		return ocorrencia;
 	}
 
-	public Chute procurarPosicao(int x, int y, ArrayList<Chute> totalch) { //verifica se houve chute naquela posicao
+	public Chute procurarPosicao(int x, int y, ArrayList<Chute> totalch) { // verifica se houve chute naquela posicao
 		for (Chute chute : totalch) {
 			if (x == chute.getX() && y == chute.getY()) {
 				return chute;

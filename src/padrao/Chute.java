@@ -27,38 +27,39 @@ public class Chute {
 
 	public void mapearPosicao() {
 		String status = "G";
-		for (int i = 0; i <= 8; i++) {
+		for (int i = 0; i < 10; i++) {
 			if (x == i && y == 0) {
 				status = "F";
 			}
-			if (x == i && y == 15) {
+			if (x == i && y == 17) {
 				status = "F";
 			}
 		}
-		for (int i = 0; i <= 15; i++) {
+		for (int i = 0; i < 18; i++) {
 			if (x == 0 && y == i) {
 				status = "F";
 			}
 		}
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i < 10; i++) {
 			if (x == i && y == 1) {
-				status = "TE"; //
+				status = "TE"; //trave esquerda
 			}
-			if (x == i && y == 14) {
-				status = "TD";
+			if (x == i && y == 16) {
+				status = "TD"; //trave direita
 			}
 		}
-		for (int i = 1; i <= 14; i++) { // travessao
+		for (int i = 1; i < 17; i++) {
 			if (x == 1 && y == i) {
-				status = "TR";
+				status = "TR"; //travessao
 			}
 		}
+		
 		if (status.equals("G")) {
 			if (x == 2 && y == 2) {
-				status = "A"; // Angulo esquerdo
+				status = "A";
 			}
-			if (x == 2 && y == 13) {
-				status = "A"; // direito
+			if (x == 2 && y == 15) {
+				status = "A";
 			}
 		}
 		this.relacaoGol = status;

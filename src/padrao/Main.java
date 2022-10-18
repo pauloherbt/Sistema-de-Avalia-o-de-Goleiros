@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Main {
 	public static Gol criarGol() {
 		Gol golaux = new Gol();
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 16; j++) {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 18; j++) {
 				Celula celula = new Celula();
 				celula.setX(i);
 				celula.setY(j);
@@ -133,3 +133,4 @@ public class Main {
 		sc.close();
 	}
 }
+
